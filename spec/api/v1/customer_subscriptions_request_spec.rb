@@ -12,15 +12,53 @@ describe "Customer Subscriptions API" do
     @SubscriptionTea2 = SubscriptionTea.create(tea_id: @tea2.id, subscription_id: @subscription1.id)
     @SubscriptionTea3 = SubscriptionTea.create(tea_id: @tea1.id, subscription_id: @subscription2.id)
     @SubscriptionTea4 = SubscriptionTea.create(tea_id: @tea2.id, subscription_id: @subscription2.id)
+
+    @subscription_hash_success = {title: "Neat subscription!",
+                                  price: 6.99,
+                                  status: 'active',
+                                  frequency: 'weekly'}
+    @subscription_hash_bad_frequency = {title: "Neat subscription!",
+                                        price: 6.99,
+                                        status: 'active',
+                                        frequency: 'weeklyy'}
   end
 
-  
+
   describe 'can create a tea subscription for a customer' do
     describe 'happy path' do
+      it 'with 2 tea' do
 
+        headers = {'CONTENT_TYPE' => 'application/json'}
+
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_success, tea: [@tea1.id, @tea2.id])
+
+        expect(response).to be_successful
+
+        expect(Subscription.find_by(title: "Neat subscription!")).to be_an_instance_of(Subscription)
+        expect(Subscription.find_by(title: "Neat subscription!").teas).to be_an(Array)
+        expect(Subscription.find_by(title: "Neat subscription!").teas.first).to be_an_instance_of(Tea)
+        expect(Subscription.find_by(title: "Neat subscription!").teas.first.title).to be("Chai")
+
+      end
     end
     describe 'sad path' do
+      it 'has no tea' do
+        headers = {'CONTENT_TYPE' => 'application/json'}
 
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_success)
+
+        expect(response).to be_error
+
+        expect(response).to have_key(:errors)
+      end
+
+      it 'has incorrect frequency' do
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_bad_frequency, tea: [@tea1.id, @tea2.id])
+
+        expect(response).to be_error
+        expect(response).to have_key(:errors)
+
+      end
     end
 
   end
