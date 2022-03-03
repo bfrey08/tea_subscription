@@ -1,24 +1,31 @@
-# README
+# Tea Subscription Service
+A take-home coding challenge with less than 8 hours of work. The concept is to set up a backend Rails API for a tea-subscription service.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+[Prompt](https://mod4.turing.edu/projects/take_home/take_home_be)
 
-Things you may want to cover:
+### Schema
+![Schema](/lib/assets/pics/schema_pic.png)
 
-* Ruby version
+### Endpoints
+Cancel a customers tea subscription:
+- ` DELETE http://localhost:3000/api/v1/customers/:id/subscriptions/:id `
 
-* System dependencies
+Subscribe a customer to a tea subscription:
+- ` POST http://localhost:3000/api/v1/customers/:id/subscriptions `
 
-* Configuration
+See all of a customers subscriptions (active and canceled)
+ - ` GET http://localhost:3000/api/v1/customers/:id/subscriptions `
 
-* Database creation
 
-* Database initialization
+### Project Board
 
-* How to run the test suite
+[github project board](https://github.com/users/bfrey08/projects/1/views/1)
 
-* Services (job queues, cache servers, search engines, etc.)
+### Additional Gems
 
-* Deployment instructions
+  - [rspec-rails](https://github.com/rspec/rspec-rails)
+  - [shoulda-matchers](https://github.com/thoughtbot/shoulda-matchers)
+  - [jsonapi-serializer](https://github.com/jsonapi-serializer/jsonapi-serializer)
 
-* ...
+
+### JSON Contract
