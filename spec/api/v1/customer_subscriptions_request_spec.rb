@@ -53,6 +53,8 @@ describe "Customer Subscriptions API" do
       end
 
       it 'has incorrect frequency' do
+        headers = {'CONTENT_TYPE' => 'application/json'}
+
         post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_bad_frequency, tea: [@tea1.id, @tea2.id])
 
         expect(response).to be_error
