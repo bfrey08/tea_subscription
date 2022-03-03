@@ -13,14 +13,23 @@ describe "Customer Subscriptions API" do
     @SubscriptionTea3 = SubscriptionTea.create(tea_id: @tea1.id, subscription_id: @subscription2.id)
     @SubscriptionTea4 = SubscriptionTea.create(tea_id: @tea2.id, subscription_id: @subscription2.id)
 
-    @subscription_hash_success = {title: "Neat subscription!",
-                                  price: 6.99,
-                                  status: 'active',
-                                  frequency: 'weekly'}
-    @subscription_hash_bad_frequency = {title: "Neat subscription!",
-                                        price: 6.99,
-                                        status: 'active',
-                                        frequency: 'weeklyy'}
+    @data_success =        {title: "Neat subscription!",
+                            price: 6.99,
+                            status: 'active',
+                            frequency: 'weekly',
+                            tea_ids: [@tea1.id, @tea2.id]}
+
+    @data_bad_frequency =   {title: "Neat subscription!",
+                            price: 6.99,
+                            status: 'active',
+                            frequency: 'weeklyy',
+                            tea_ids: [@tea1.id, @tea2.id]}
+
+    @data_no_tea =          {title: "Neat subscription!",
+                            price: 6.99,
+                            status: 'active',
+                            frequency: 'weeklyy'}
+
   end
 
 
@@ -30,7 +39,7 @@ describe "Customer Subscriptions API" do
 
         headers = {'CONTENT_TYPE' => 'application/json'}
 
-        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_success, tea: [@tea1.id, @tea2.id])
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(@data_success)
 
         expect(response).to be_successful
 
@@ -45,7 +54,7 @@ describe "Customer Subscriptions API" do
       it 'has no tea' do
         headers = {'CONTENT_TYPE' => 'application/json'}
 
-        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_success)
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(@data_no_tea)
 
         expect(response).to be_error
 
@@ -55,7 +64,7 @@ describe "Customer Subscriptions API" do
       it 'has incorrect frequency' do
         headers = {'CONTENT_TYPE' => 'application/json'}
 
-        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(subscription: @subscription_hash_bad_frequency, tea: [@tea1.id, @tea2.id])
+        post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers params: JSON.generate(@data_bad_frequency)
 
         expect(response).to be_error
         expect(response).to have_key(:errors)
