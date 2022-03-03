@@ -4,4 +4,4 @@ class CustomerSubscriptionsController < ApplicationController
 
   end
 
-end 
+end
