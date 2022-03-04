@@ -44,9 +44,8 @@ describe "Customer Subscriptions API" do
         expect(response).to be_successful
 
         expect(Subscription.find_by(title: "Neat subscription!")).to be_an_instance_of(Subscription)
-        expect(Subscription.find_by(title: "Neat subscription!").teas).to be_an(Array)
         expect(Subscription.find_by(title: "Neat subscription!").teas.first).to be_an_instance_of(Tea)
-        expect(Subscription.find_by(title: "Neat subscription!").teas.first.title).to be("Chai")
+        expect(Subscription.find_by(title: "Neat subscription!").teas.first.title).to eq("Chai")
 
       end
     end
@@ -55,19 +54,16 @@ describe "Customer Subscriptions API" do
         headers = {'CONTENT_TYPE' => 'application/json'}
 
         post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers, params: JSON.generate(@data_no_tea)
-
-        expect(response).to be_error
-
-        expect(response).to have_key(:errors)
+        confirmation = (JSON.parse(response.body, symbolize_names: true))
+        expect(confirmation).to have_key(:errors)
       end
 
       it 'has incorrect frequency' do
         headers = {'CONTENT_TYPE' => 'application/json'}
 
         post "/api/v1/customers/#{@customer1.id}/subscriptions", headers: headers, params: JSON.generate(@data_bad_frequency)
-
-        expect(response).to be_error
-        expect(response).to have_key(:errors)
+        confirmation = (JSON.parse(response.body, symbolize_names: true))
+        expect(confirmation).to have_key(:errors)
 
       end
     end
