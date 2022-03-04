@@ -29,6 +29,22 @@ See all of a customers subscriptions (active and canceled)
 
 
 ### JSON Contract
+Endpoint:
+```
+POST http://localhost:3000/api/v1/customers/:id/subscriptions
+```
+Query Params:
+```
+title:Neat subscription!
+price:6.99
+status:active
+frequency:weekly
+tea_ids[]:1
+tea_ids[]:2
+
+```
+Succesful response:
+
 ```
 {
     "data": {
@@ -43,4 +59,13 @@ See all of a customers subscriptions (active and canceled)
     }
 }
 
+```
+
+Error:
+```
+{
+    "errors": {
+        "details": "There was an error creating the subscription"
+    }
+}
 ```
