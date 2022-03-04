@@ -1,9 +1,15 @@
 class Api::V1::SubscriptionsController < ApplicationController
 
   def create
-    subscription = Subscription.create(subscription_params)
-
-    if subscription.save && tea_ids[:tea_ids].is_a?(Array)
+    if subscription_params[:frequency] == "weekly" || subscription_params[:frequency] == "monthly" || subscription_params[:frequency] == "yearly" && subscription_params[:status] == "active" || subscription_params[:status] == "cancelled"
+      subscription = Subscription.create!(subscription_params)
+      if subscription.save
+        subscription_saved = 'yes'
+      end
+    else
+      subscription = nil
+    end
+    if subscription != nil && subscription_saved == 'yes' && tea_ids[:tea_ids].is_a?(Array)
       subscription_teas = tea_ids[:tea_ids].map {|tea_id| SubscriptionTea.create(subscription_id: subscription.id, tea_id: tea_id)}
       render json: SubscriptionSerializer.new(Subscription.find(subscription.id)), status: 201
     else

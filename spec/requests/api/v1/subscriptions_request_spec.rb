@@ -28,7 +28,7 @@ describe "Customer Subscriptions API" do
     @data_no_tea =          {title: "Neat subscription!",
                             price: 6.99,
                             status: 'active',
-                            frequency: 'weeklyy'}
+                            frequency: 'weekly'}
 
   end
 
