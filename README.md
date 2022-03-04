@@ -29,3 +29,18 @@ See all of a customers subscriptions (active and canceled)
 
 
 ### JSON Contract
+```
+{
+    "data": {
+        "id": "3",
+        "type": "subscription",
+        "attributes": {
+            "title": "Neat subscription!",
+            "price": "6.99",
+            "status": "active",
+            "frequency": "weekly"
+        }
+    }
+}
+
+```
